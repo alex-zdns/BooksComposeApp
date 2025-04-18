@@ -3,4 +3,6 @@
     <string name="error_message">Ошибка выполнения запроса, попробуйте повторить</string>
     <string name="retry">Попробовать еще</string>
     <string name="description_title">Описание</string>
+    <string name="empty_result_message">По вашему запросу ничего не найдено</string>
+    <string name="empty_query_message">Введите название книги, которую ищете </string>
 </resources>
