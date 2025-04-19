@@ -7,4 +7,6 @@
     <string name="empty_query_message">Введите название книги, которую ищете </string>
     <string name="search_title">Поиск</string>
     <string name="favorites_title">Избранное</string>
+    <string name="add_book_to_favorite_message">Книга успешно добавлена в избранное</string>
+    <string name="remove_book_from_favorite_message">Книга успешно удалена из избранного</string>
 </resources>

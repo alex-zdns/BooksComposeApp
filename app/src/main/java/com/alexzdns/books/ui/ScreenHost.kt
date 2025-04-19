@@ -1,10 +1,13 @@
 package com.alexzdns.books.ui
 
 import androidx.activity.compose.LocalActivity
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
@@ -13,6 +16,9 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarData
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
@@ -29,20 +35,25 @@ import com.alexzdns.books.ui.navigation.BookAppNavigation
 import com.alexzdns.books.ui.navigation.BottomNavigationTab
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavDestination.Companion.hierarchy
+import com.alexzdns.books.R
 import com.alexzdns.books.ui.favorite.common.FavoritesOperationViewModel
 import com.alexzdns.books.ui.models.NotificationEvent
 import com.alexzdns.books.ui.navigation.destination.DETAILS_ROUTE
 import com.alexzdns.books.ui.theme.Typography
 import com.alexzdns.books.ui.theme.blue
 import com.alexzdns.books.ui.theme.lightGrey
+import kotlin.time.Duration
 
 val LocalSnackbarHostState = compositionLocalOf<SnackbarHostState> {
     error("No Snackbar Host State")
@@ -62,7 +73,13 @@ fun ScreenHost() {
 
         Scaffold(
             snackbarHost = {
-                SnackbarHost(hostState = snackbarHostState)
+                SnackbarHost(hostState = snackbarHostState) { snackbarData: SnackbarData ->
+                    CustomSnackBar(
+                        message = snackbarData.visuals.message,
+                        containerColor = blue,
+                        onDismissClick = { snackbarData.dismiss() }
+                    )
+                }
             },
             contentWindowInsets = WindowInsets.ime,
             modifier = Modifier.fillMaxSize(),
@@ -150,13 +167,49 @@ private fun SnackBarObserver() {
     val viewModel: FavoritesOperationViewModel =
         hiltViewModel(LocalActivity.current as ViewModelStoreOwner)
 
+    val context = LocalContext.current
+
     LaunchedEffect(Unit) {
         viewModel.notificationSharedFlow.collect {
             snackbarHostState.showSnackbar(
                 message = when (it) {
-                    NotificationEvent.AddToFavorites -> "Книга успешно добавлена в избранное"
-                    NotificationEvent.RemoveFromFavorites -> "Книга успешно удалена из избранного"
-                }
+                    NotificationEvent.AddToFavorites -> context.getString(R.string.add_book_to_favorite_message)
+                    NotificationEvent.RemoveFromFavorites -> context.getString(R.string.remove_book_from_favorite_message)
+                },
+                duration = SnackbarDuration.Short
+            )
+        }
+    }
+}
+
+@Composable
+fun CustomSnackBar(
+    message: String,
+    containerColor: Color = blue,
+    onDismissClick: () -> Unit,
+) {
+    Snackbar(
+        Modifier
+            .fillMaxWidth()
+            .padding(vertical = 10.dp, horizontal = 20.dp),
+        containerColor = containerColor
+    ) {
+        Row(Modifier.padding(top = 22.dp, bottom = 22.dp, start = 10.dp, end = 10.dp)) {
+            Text(
+                text = message,
+                color = Color.White,
+                style = Typography.bodySmall,
+                modifier = Modifier.weight(1f),
+            )
+            Icon(
+                painter = painterResource(R.drawable.ic_close),
+                contentDescription = null,
+                modifier = Modifier
+                    .clickable {
+                        onDismissClick()
+                    }
+                    .padding(start = 8.dp)
+                    .align(Alignment.CenterVertically)
             )
         }
     }
