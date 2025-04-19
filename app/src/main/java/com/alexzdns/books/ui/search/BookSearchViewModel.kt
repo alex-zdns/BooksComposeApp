@@ -2,8 +2,10 @@ package com.alexzdns.books.ui.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.alexzdns.books.data.database.dao.FavoritesBooksDao
 import com.alexzdns.books.domain.repository.BookCacheRepository
 import com.alexzdns.books.domain.repository.BookRepository
+import com.alexzdns.books.ui.models.BookItemUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
@@ -19,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class BookSearchViewModel @Inject constructor(
     private val bookRepository: BookRepository,
-    private val cacheRepository: BookCacheRepository
+    private val cacheRepository: BookCacheRepository,
+    private val favoritesBooksDao: FavoritesBooksDao,
 ) : ViewModel() {
 
     companion object {
@@ -67,7 +70,12 @@ class BookSearchViewModel @Inject constructor(
                 val bookList = bookRepository.searchBooks(query)
                 if (bookList.isNotEmpty()) {
                     cacheRepository.insertAll(bookList)
-                    _booksStateFlow.emit(BookSearchState.Result(bookList))
+                    _booksStateFlow.emit(BookSearchState.Result(bookList.map {
+                        BookItemUi(
+                            isFavorite = false,
+                            book = it,
+                        )
+                    }))
                 } else {
                     _booksStateFlow.emit(BookSearchState.EmptyResult)
                 }
@@ -79,5 +87,9 @@ class BookSearchViewModel @Inject constructor(
 
     fun retrySearch() {
         searchBooks(debounceSearch.value)
+    }
+
+    fun onFavoriteClick(bookId: String) {
+
     }
 }

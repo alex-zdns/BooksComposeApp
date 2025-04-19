@@ -5,11 +5,15 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.alexzdns.books.data.database.models.BookEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BooksDao {
     @Query("SELECT * FROM books WHERE _id = :bookId")
     suspend fun loadById(bookId: String): BookEntity?
+
+    @Query("SELECT * FROM books WHERE _id IN (SELECT book_id FROM FAVORITES)")
+    fun getFavoritesBook(): Flow<List<BookEntity>>
 
     @Insert(onConflict = OnConflictStrategy.NONE)
     suspend fun insert(book: BookEntity)

@@ -2,6 +2,7 @@ package com.alexzdns.books.data.database.repository
 
 import com.alexzdns.books.data.database.dao.FavoritesBooksDao
 import com.alexzdns.books.data.database.mappers.FavoritesBooksDbMapper
+import com.alexzdns.books.domain.models.BookItem
 import com.alexzdns.books.domain.repository.FavoritesBooksRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

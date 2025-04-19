@@ -6,10 +6,14 @@ import com.alexzdns.books.ui.favorite.FavoritesScreen
 
 const val FAVORITES_SCREEN_ROUTE = "favorites"
 
-fun NavGraphBuilder.favorites(onBookClick: (String) -> Unit) {
+fun NavGraphBuilder.favorites(
+    onBackClick: () -> Unit,
+    onBookClick: (String) -> Unit
+) {
     composable(FAVORITES_SCREEN_ROUTE) {
         FavoritesScreen(
-            onBookClick = onBookClick
+            onBackClick = onBackClick,
+            onBookClick = onBookClick,
         )
     }
 }

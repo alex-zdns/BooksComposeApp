@@ -18,7 +18,10 @@ fun BookAppNavigation(
         startDestination = MAIN_SCREEN_ROUTE,
     ) {
         main(onBookClick = navController::navigateToBookDetails)
-        favorites(onBookClick = navController::navigateToBookDetails)
+        favorites(
+            onBackClick = navController::popBackStack,
+            onBookClick = navController::navigateToBookDetails
+        )
         bookDetails(onBackClick = navController::popBackStack)
     }
 }

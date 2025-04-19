@@ -40,7 +40,11 @@ fun BookSearchScreen(
             BookSearchState.EmptyResult -> MessageView(R.string.empty_result_message)
             BookSearchState.Error -> ErrorView(viewModel::retrySearch)
             BookSearchState.Loading -> LoaderView()
-            is BookSearchState.Result -> BooksListView(result.bookList, onBookClick)
+            is BookSearchState.Result -> BooksListView(
+                books = result.bookList,
+                onBookClick = onBookClick,
+                onFavorite = viewModel::onFavoriteClick
+            )
         }
     }
 }
