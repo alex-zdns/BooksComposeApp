@@ -1,8 +1,10 @@
 package com.alexzdns.books.ui.details
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexzdns.books.domain.repository.BookRepository
+import com.alexzdns.books.ui.navigation.destination.ID_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BookDetailsViewModel @Inject constructor(
-    //savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val bookRepository: BookRepository,
 ) : ViewModel() {
 
@@ -21,8 +23,8 @@ class BookDetailsViewModel @Inject constructor(
     private val _bookFavoriteStateFlow = MutableStateFlow<Boolean>(false)
     val bookFavoriteStateFlow = _bookFavoriteStateFlow.asStateFlow()
 
-    private val bookId: String = "0iJJEAAAQBAJ"
-    /*savedStateHandle.get<String>(ID_KEY) ?: error("movieId must be not null")*/
+    private val bookId: String =
+        savedStateHandle.get<String>(ID_KEY) ?: error("bookId must be not null")
 
     init {
         getBook()
@@ -36,7 +38,6 @@ class BookDetailsViewModel @Inject constructor(
             } catch (e: Exception) {
                 _bookDetailsStateFlow.emit(BookDetailsState.Error)
             }
-
         }
     }
 

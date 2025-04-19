@@ -6,7 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.alexzdns.books.ui.search.BookSearchScreen
+import androidx.navigation.compose.rememberNavController
+import com.alexzdns.books.ui.navigation.BookAppNavigation
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,7 +19,8 @@ class MainActivity : ComponentActivity() {
             Surface(
                 Modifier.fillMaxSize()
             ) {
-                BookSearchScreen({})
+                val navController = rememberNavController()
+                BookAppNavigation(navController)
             }
         }
     }

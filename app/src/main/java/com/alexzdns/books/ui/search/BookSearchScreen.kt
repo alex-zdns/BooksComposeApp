@@ -26,7 +26,7 @@ import com.alexzdns.books.ui.theme.lightGrey
 
 @Composable
 fun BookSearchScreen(
-    onBookClick: () -> Unit = {},
+    onBookClick: (String) -> Unit = {},
     viewModel: BookSearchViewModel = hiltViewModel(),
 ) {
     val queryState = viewModel.searchQuery.collectAsStateWithLifecycle()

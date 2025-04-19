@@ -25,7 +25,7 @@ import com.skydoves.landscapist.glide.GlideImage
 import androidx.compose.foundation.lazy.grid.items
 
 @Composable
-fun BooksListView(books: List<BookItem>, onBookClick: () -> Unit) {
+fun BooksListView(books: List<BookItem>, onBookClick: (String) -> Unit) {
     LazyVerticalGrid(
         GridCells.Fixed(2),
         contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 12.dp),
@@ -43,11 +43,13 @@ fun BooksListView(books: List<BookItem>, onBookClick: () -> Unit) {
 }
 
 @Composable
-private fun BookItemView(item: BookItem, onItemClick: () -> Unit) {
+private fun BookItemView(item: BookItem, onItemClick: (String) -> Unit) {
     Column(
         Modifier
             .fillMaxWidth()
-            .clickable(onClick = onItemClick)
+            .clickable {
+                onItemClick.invoke(item.id)
+            }
     ) {
         Card(
             shape = RoundedCornerShape(16.dp),
