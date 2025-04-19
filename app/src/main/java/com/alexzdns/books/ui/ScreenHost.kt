@@ -1,10 +1,12 @@
 package com.alexzdns.books.ui
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -24,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.alexzdns.books.ui.navigation.destination.DETAILS_ROUTE
 import com.alexzdns.books.ui.theme.Typography
@@ -51,12 +54,20 @@ private fun BottomNavigationBar(navController: NavHostController) {
     val isDetailsScreen = navBackStackEntry?.destination?.route?.startsWith(DETAILS_ROUTE) == true
     if (isDetailsScreen) return
 
-    NavigationBar {
-        bottomNavigationTab.forEach { item ->
-            AddItem(
-                screen = item,
-                navController,
-            )
+    Column {
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = lightGrey
+        )
+        NavigationBar(
+            containerColor = Color.White
+        ) {
+            bottomNavigationTab.forEach { item ->
+                AddItem(
+                    screen = item,
+                    navController,
+                )
+            }
         }
     }
 }
