@@ -7,12 +7,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.alexzdns.books.ui.details.DetailsBookScreen
 
-private const val BASE_ROUTE = "bookDetails"
+const val DETAILS_ROUTE = "bookDetails"
 const val ID_KEY = "id"
 
 fun NavGraphBuilder.bookDetails(onBackClick: () -> Unit) {
     composable(
-        route = "$BASE_ROUTE/{$ID_KEY}",
+        route = "$DETAILS_ROUTE/{$ID_KEY}",
         arguments = listOf(
             navArgument(ID_KEY) {
                 type = NavType.StringType
@@ -25,5 +25,5 @@ fun NavGraphBuilder.bookDetails(onBackClick: () -> Unit) {
 }
 
 fun NavController.navigateToBookDetails(bookId: String) {
-    navigate("$BASE_ROUTE/$bookId")
+    navigate("$DETAILS_ROUTE/$bookId")
 }
