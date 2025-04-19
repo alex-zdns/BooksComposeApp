@@ -1,5 +1,6 @@
 package com.alexzdns.books.ui.details
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,10 +20,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexzdns.books.R
 import com.alexzdns.books.ui.common.ErrorView
 import com.alexzdns.books.ui.common.LoaderView
+import com.alexzdns.books.ui.favorite.common.FavoritesOperationViewModel
 import com.alexzdns.books.ui.theme.lightGrey
 import com.alexzdns.books.ui.theme.red
 
@@ -31,11 +34,18 @@ fun DetailsBookScreen(
     onBackClick: () -> Unit,
     viewModel: BookDetailsViewModel = hiltViewModel(),
 ) {
+    val favoritesOperationViewModel: FavoritesOperationViewModel =
+        hiltViewModel(LocalActivity.current as ViewModelStoreOwner)
+
     val bookState = viewModel.bookDetailsStateFlow.collectAsStateWithLifecycle()
     val favoriteState = viewModel.bookFavoriteStateFlow.collectAsStateWithLifecycle()
 
+    val onFavoriteClick =  {
+        favoritesOperationViewModel.onFavoriteClick(viewModel.bookId)
+    }
+
     Column {
-        Toolbar(onBackClick, viewModel::onFavoriteClick, favoriteState.value)
+        Toolbar(onBackClick, onFavoriteClick, favoriteState.value)
         when (val result = bookState.value) {
             BookDetailsState.Error -> ErrorView(viewModel::retry)
             BookDetailsState.Loading -> LoaderView()

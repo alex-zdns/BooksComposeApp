@@ -1,5 +1,6 @@
 package com.alexzdns.books.ui
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
@@ -12,9 +13,14 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -22,28 +28,49 @@ import androidx.navigation.compose.rememberNavController
 import com.alexzdns.books.ui.navigation.BookAppNavigation
 import com.alexzdns.books.ui.navigation.BottomNavigationTab
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavDestination.Companion.hierarchy
+import com.alexzdns.books.ui.favorite.common.FavoritesOperationViewModel
+import com.alexzdns.books.ui.models.NotificationEvent
 import com.alexzdns.books.ui.navigation.destination.DETAILS_ROUTE
 import com.alexzdns.books.ui.theme.Typography
 import com.alexzdns.books.ui.theme.blue
 import com.alexzdns.books.ui.theme.lightGrey
 
+val LocalSnackbarHostState = compositionLocalOf<SnackbarHostState> {
+    error("No Snackbar Host State")
+}
+
 @Composable
 fun ScreenHost() {
     val navController = rememberNavController()
+    val snackbarHostState = remember { SnackbarHostState() }
 
-    Scaffold(
-        contentWindowInsets = WindowInsets.ime,
-        modifier = Modifier.fillMaxSize(),
-        bottomBar = { BottomNavigationBar(navController) },
-    ) { padding ->
-        Surface(modifier = Modifier.padding(padding)) {
-            BookAppNavigation(navController)
+    CompositionLocalProvider(
+        values = arrayOf(
+            LocalSnackbarHostState provides snackbarHostState
+        )
+    ) {
+        SnackBarObserver()
+
+        Scaffold(
+            snackbarHost = {
+                SnackbarHost(hostState = snackbarHostState)
+            },
+            contentWindowInsets = WindowInsets.ime,
+            modifier = Modifier.fillMaxSize(),
+            bottomBar = { BottomNavigationBar(navController) },
+        ) { padding ->
+            Surface(modifier = Modifier.padding(padding)) {
+                BookAppNavigation(navController)
+            }
         }
     }
 }
@@ -116,3 +143,21 @@ private val bottomNavigationTab = listOf(
     BottomNavigationTab.Search,
     BottomNavigationTab.Favorite,
 )
+
+@Composable
+private fun SnackBarObserver() {
+    val snackbarHostState = LocalSnackbarHostState.current
+    val viewModel: FavoritesOperationViewModel =
+        hiltViewModel(LocalActivity.current as ViewModelStoreOwner)
+
+    LaunchedEffect(Unit) {
+        viewModel.notificationSharedFlow.collect {
+            snackbarHostState.showSnackbar(
+                message = when (it) {
+                    NotificationEvent.AddToFavorites -> "Книга успешно добавлена в избранное"
+                    NotificationEvent.RemoveFromFavorites -> "Книга успешно удалена из избранного"
+                }
+            )
+        }
+    }
+}

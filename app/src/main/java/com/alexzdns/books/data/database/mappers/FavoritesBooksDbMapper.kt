@@ -4,10 +4,6 @@ import com.alexzdns.books.data.database.models.FavoriteEntity
 import javax.inject.Inject
 
 class FavoritesBooksDbMapper @Inject constructor() {
-    private companion object {
-        const val SEPARATOR = "$$$"
-    }
-
     fun toEntity(bookId: String): FavoriteEntity {
         return FavoriteEntity(
             id = 0,

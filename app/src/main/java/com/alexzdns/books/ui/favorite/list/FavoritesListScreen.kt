@@ -1,5 +1,6 @@
-package com.alexzdns.books.ui.favorite
+package com.alexzdns.books.ui.favorite.list
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -16,8 +17,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexzdns.books.R
+import com.alexzdns.books.ui.favorite.common.FavoritesOperationViewModel
 import com.alexzdns.books.ui.list.BooksListView
 import com.alexzdns.books.ui.theme.Typography
 
@@ -25,16 +28,18 @@ import com.alexzdns.books.ui.theme.Typography
 fun FavoritesScreen(
     onBackClick: () -> Unit,
     onBookClick: (String) -> Unit,
-    viewModel: FavoritesViewModel = hiltViewModel(),
+    viewModel: FavoritesListViewModel = hiltViewModel(),
 ) {
     val booksState = viewModel.favoriteBooksStateFlow.collectAsStateWithLifecycle(emptyList())
+    val favoritesOperationViewModel: FavoritesOperationViewModel =
+        hiltViewModel(LocalActivity.current as ViewModelStoreOwner)
 
     Column {
         Toolbar(onBackClick)
         BooksListView(
             books = booksState.value,
             onBookClick = onBookClick,
-            onFavorite = viewModel::onFavoriteClick
+            onFavorite = favoritesOperationViewModel::onFavoriteClick
         )
     }
 }

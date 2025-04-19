@@ -1,5 +1,6 @@
 package com.alexzdns.books.ui.search
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,11 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexzdns.books.R
 import com.alexzdns.books.ui.common.ErrorView
 import com.alexzdns.books.ui.common.LoaderView
 import com.alexzdns.books.ui.common.MessageView
+import com.alexzdns.books.ui.favorite.common.FavoritesOperationViewModel
 import com.alexzdns.books.ui.list.BooksListView
 import com.alexzdns.books.ui.theme.lightGrey
 
@@ -31,6 +34,9 @@ fun BookSearchScreen(
 ) {
     val queryState = viewModel.searchQuery.collectAsStateWithLifecycle()
     val screenState = viewModel.booksStateFlow.collectAsStateWithLifecycle()
+
+    val favoritesOperationViewModel: FavoritesOperationViewModel =
+        hiltViewModel(LocalActivity.current as ViewModelStoreOwner)
 
     Column {
         Toolbar(queryState.value, viewModel::onQueryChange)
@@ -43,7 +49,7 @@ fun BookSearchScreen(
             is BookSearchState.Result -> BooksListView(
                 books = result.bookList,
                 onBookClick = onBookClick,
-                onFavorite = viewModel::onFavoriteClick
+                onFavorite = favoritesOperationViewModel::onFavoriteClick
             )
         }
     }

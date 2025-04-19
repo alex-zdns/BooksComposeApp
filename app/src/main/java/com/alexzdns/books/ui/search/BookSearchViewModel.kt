@@ -2,11 +2,11 @@ package com.alexzdns.books.ui.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alexzdns.books.data.database.dao.FavoritesBooksDao
 import com.alexzdns.books.domain.repository.BookCacheRepository
 import com.alexzdns.books.domain.repository.BookRepository
 import com.alexzdns.books.ui.models.BookItemUi
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,8 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BookSearchViewModel @Inject constructor(
     private val bookRepository: BookRepository,
-    private val cacheRepository: BookCacheRepository,
-    private val favoritesBooksDao: FavoritesBooksDao,
+    private val cacheRepository: BookCacheRepository
 ) : ViewModel() {
 
     companion object {
@@ -63,7 +62,7 @@ class BookSearchViewModel @Inject constructor(
     private fun searchBooks(query: String) {
         searchJob?.cancel()
 
-        searchJob = viewModelScope.launch {
+        searchJob = viewModelScope.launch(Dispatchers.IO) {
             _booksStateFlow.emit(BookSearchState.Loading)
 
             try {
@@ -79,7 +78,7 @@ class BookSearchViewModel @Inject constructor(
                 } else {
                     _booksStateFlow.emit(BookSearchState.EmptyResult)
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 _booksStateFlow.emit(BookSearchState.Error)
             }
         }
@@ -87,9 +86,5 @@ class BookSearchViewModel @Inject constructor(
 
     fun retrySearch() {
         searchBooks(debounceSearch.value)
-    }
-
-    fun onFavoriteClick(bookId: String) {
-
     }
 }

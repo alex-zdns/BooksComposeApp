@@ -1,4 +1,4 @@
-package com.alexzdns.books.ui.favorite
+package com.alexzdns.books.ui.favorite.list
 
 import androidx.lifecycle.ViewModel
 import com.alexzdns.books.domain.repository.BookCacheRepository
@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 @HiltViewModel
-class FavoritesViewModel @Inject constructor(
-    private val bookRepository: BookCacheRepository
+class FavoritesListViewModel @Inject constructor(
+    bookRepository: BookCacheRepository
 ) : ViewModel() {
 
     val favoriteBooksStateFlow = bookRepository.getAllFavoritesBooks().map { list ->
@@ -19,10 +19,6 @@ class FavoritesViewModel @Inject constructor(
                 isFavorite = true,
             )
         }
-    }
-
-    fun onFavoriteClick(bookId: String) {
-
     }
 }
 
