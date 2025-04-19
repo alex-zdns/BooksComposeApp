@@ -24,4 +24,12 @@ object DbContract {
         const val COLUMN_NAME_BOOK_ID = "book_id"
         const val COLUMN_NAME_TIMESTAMP = "timestamp"
     }
+
+    object History {
+        const val TABLE_NAME = "history"
+
+        const val COLUMN_NAME_ID = BaseColumns._ID
+        const val COLUMN_NAME_BOOK_ID = "book_id"
+        const val COLUMN_NAME_TIMESTAMP = "timestamp"
+    }
 }

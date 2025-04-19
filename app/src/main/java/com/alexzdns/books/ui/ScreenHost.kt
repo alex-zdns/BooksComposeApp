@@ -53,7 +53,6 @@ import com.alexzdns.books.ui.navigation.destination.DETAILS_ROUTE
 import com.alexzdns.books.ui.theme.Typography
 import com.alexzdns.books.ui.theme.blue
 import com.alexzdns.books.ui.theme.lightGrey
-import kotlin.time.Duration
 
 val LocalSnackbarHostState = compositionLocalOf<SnackbarHostState> {
     error("No Snackbar Host State")

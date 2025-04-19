@@ -5,11 +5,14 @@ import androidx.room.Room
 import com.alexzdns.books.data.database.BooksAppDatabase
 import com.alexzdns.books.data.database.dao.BooksDao
 import com.alexzdns.books.data.database.dao.FavoritesBooksDao
+import com.alexzdns.books.data.database.dao.HistoryBooksDao
 import com.alexzdns.books.data.database.models.DbContract
 import com.alexzdns.books.data.database.repository.BookCacheRepositoryImpl
 import com.alexzdns.books.data.database.repository.FavoritesBooksRepositoryImpl
+import com.alexzdns.books.data.database.repository.HistorySeenBooksRepositoryImpl
 import com.alexzdns.books.domain.repository.BookCacheRepository
 import com.alexzdns.books.domain.repository.FavoritesBooksRepository
+import com.alexzdns.books.domain.repository.HistorySeenBooksRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -43,6 +46,11 @@ abstract class DatabaseModule {
         fun provideFavoritesBooksDao(database: BooksAppDatabase): FavoritesBooksDao {
             return database.favoritesBooksDao
         }
+
+        @Provides
+        fun provideHistoryBooksDaoDao(database: BooksAppDatabase): HistoryBooksDao {
+            return database.historyBooksDao
+        }
     }
 
     @Binds
@@ -50,4 +58,7 @@ abstract class DatabaseModule {
 
     @Binds
     abstract fun bindBookCacheRepository(repository: BookCacheRepositoryImpl): BookCacheRepository
+
+    @Binds
+    abstract fun bindHistoryRepository(repository: HistorySeenBooksRepositoryImpl): HistorySeenBooksRepository
 }

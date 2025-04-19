@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexzdns.books.domain.repository.BookRepository
 import com.alexzdns.books.domain.repository.FavoritesBooksRepository
+import com.alexzdns.books.domain.repository.HistorySeenBooksRepository
 import com.alexzdns.books.ui.navigation.destination.ID_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +19,7 @@ class BookDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val bookRepository: BookRepository,
     private val favoritesBooksRepository: FavoritesBooksRepository,
+    private val historySeenBooksRepository: HistorySeenBooksRepository
 ) : ViewModel() {
 
     private val _bookDetailsStateFlow = MutableStateFlow<BookDetailsState>(BookDetailsState.Loading)
@@ -30,6 +32,7 @@ class BookDetailsViewModel @Inject constructor(
         savedStateHandle.get<String>(ID_KEY) ?: error("bookId must be not null")
 
     init {
+        trackBookDetailsView()
         getBook()
         observeFavoritesState()
     }
@@ -54,6 +57,12 @@ class BookDetailsViewModel @Inject constructor(
             favoritesBooksRepository.isFavoritesFlow(bookId).collect {
                 _bookFavoriteStateFlow.value = it
             }
+        }
+    }
+
+    private fun trackBookDetailsView() {
+        viewModelScope.launch(Dispatchers.IO) {
+            historySeenBooksRepository.trackBookDetailsSeen(bookId)
         }
     }
 }
