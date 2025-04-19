@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexzdns.books.domain.repository.BookRepository
+import com.alexzdns.books.domain.repository.FavoritesBooksRepository
 import com.alexzdns.books.ui.navigation.destination.ID_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +16,7 @@ import javax.inject.Inject
 class BookDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val bookRepository: BookRepository,
+    private val favoritesBooksRepository: FavoritesBooksRepository,
 ) : ViewModel() {
 
     private val _bookDetailsStateFlow = MutableStateFlow<BookDetailsState>(BookDetailsState.Loading)
@@ -28,6 +30,23 @@ class BookDetailsViewModel @Inject constructor(
 
     init {
         getBook()
+        observeFavoritesState()
+    }
+
+    fun retry() {
+        getBook()
+    }
+
+    fun onFavoriteClick() {
+        val isFavorite = _bookFavoriteStateFlow.value
+
+        viewModelScope.launch {
+            if (isFavorite) {
+                favoritesBooksRepository.removeToFavorites(bookId)
+            } else {
+                favoritesBooksRepository.addToFavorites(bookId)
+            }
+        }
     }
 
     private fun getBook() {
@@ -41,11 +60,11 @@ class BookDetailsViewModel @Inject constructor(
         }
     }
 
-    fun retry() {
-        getBook()
-    }
-
-    fun onFavoriteClick() {
-        _bookFavoriteStateFlow.tryEmit(!_bookFavoriteStateFlow.value)
+    private fun observeFavoritesState() {
+        viewModelScope.launch {
+            favoritesBooksRepository.isFavorites(bookId).collect {
+                _bookFavoriteStateFlow.value = it
+            }
+        }
     }
 }

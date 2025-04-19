@@ -23,7 +23,10 @@ import com.alexzdns.books.ui.theme.Typography
 fun ErrorView(
     onRetry: () -> Unit,
 ) {
-    Box(contentAlignment = Alignment.Center) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
         Column {
             Text(
                 text = stringResource(R.string.error_message),

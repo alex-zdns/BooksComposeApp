@@ -2,6 +2,7 @@ package com.alexzdns.books.ui.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.alexzdns.books.domain.repository.BookCacheRepository
 import com.alexzdns.books.domain.repository.BookRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
@@ -18,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BookSearchViewModel @Inject constructor(
     private val bookRepository: BookRepository,
+    private val cacheRepository: BookCacheRepository
 ) : ViewModel() {
 
     companion object {
@@ -63,9 +65,12 @@ class BookSearchViewModel @Inject constructor(
 
             try {
                 val bookList = bookRepository.searchBooks(query)
-                if (bookList.isNotEmpty())
+                if (bookList.isNotEmpty()) {
+                    cacheRepository.insertAll(bookList)
                     _booksStateFlow.emit(BookSearchState.Result(bookList))
-                else _booksStateFlow.emit(BookSearchState.EmptyResult)
+                } else {
+                    _booksStateFlow.emit(BookSearchState.EmptyResult)
+                }
             } catch (e: Exception) {
                 _booksStateFlow.emit(BookSearchState.Error)
             }
