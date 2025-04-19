@@ -12,7 +12,7 @@ interface BooksDao {
     @Query("SELECT * FROM books WHERE _id = :bookId")
     suspend fun loadById(bookId: String): BookEntity?
 
-    @Query("SELECT * FROM books WHERE _id IN (SELECT book_id FROM FAVORITES)")
+    @Query("SELECT books.* FROM books JOIN favorites ON books._id = favorites.book_id ORDER BY favorites.timestamp DESC")
     fun getFavoritesBook(): Flow<List<BookEntity>>
 
     @Insert(onConflict = OnConflictStrategy.NONE)
