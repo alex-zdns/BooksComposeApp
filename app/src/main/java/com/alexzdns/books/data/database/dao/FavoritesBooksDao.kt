@@ -9,6 +9,9 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavoritesBooksDao {
+    @Query("SELECT book_id FROM favorites")
+    fun getFavoritesBookIds(): Flow<List<String>>
+
     @Query("SELECT EXISTS(SELECT * FROM favorites WHERE book_id = :bookId)")
     fun isFavoriteFlow(bookId: String): Flow<Boolean>
 

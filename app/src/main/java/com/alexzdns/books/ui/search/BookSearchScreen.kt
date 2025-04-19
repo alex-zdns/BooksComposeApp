@@ -33,7 +33,7 @@ fun BookSearchScreen(
     viewModel: BookSearchViewModel = hiltViewModel(),
 ) {
     val queryState = viewModel.searchQuery.collectAsStateWithLifecycle()
-    val screenState = viewModel.booksStateFlow.collectAsStateWithLifecycle()
+    val screenState = viewModel.booksStateFlow.collectAsStateWithLifecycle(BookSearchState.EmptyQuery)
 
     val favoritesOperationViewModel: FavoritesOperationViewModel =
         hiltViewModel(LocalActivity.current as ViewModelStoreOwner)

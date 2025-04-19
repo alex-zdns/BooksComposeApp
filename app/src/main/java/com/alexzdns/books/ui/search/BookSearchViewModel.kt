@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexzdns.books.domain.repository.BookCacheRepository
 import com.alexzdns.books.domain.repository.BookRepository
+import com.alexzdns.books.domain.repository.FavoritesBooksRepository
 import com.alexzdns.books.ui.models.BookItemUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -11,6 +12,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
@@ -21,15 +23,34 @@ import javax.inject.Inject
 @HiltViewModel
 class BookSearchViewModel @Inject constructor(
     private val bookRepository: BookRepository,
-    private val cacheRepository: BookCacheRepository
+    private val cacheRepository: BookCacheRepository,
+    private val favoritesBooksRepository: FavoritesBooksRepository,
 ) : ViewModel() {
 
     companion object {
         private const val SEARCH_DEBOUNCE = 2_000L
     }
 
+    private var favoritesBookIds = emptySet<String>()
+
     private val _booksStateFlow = MutableStateFlow<BookSearchState>(BookSearchState.EmptyQuery)
-    val booksStateFlow = _booksStateFlow.asStateFlow()
+    val booksStateFlow = _booksStateFlow
+        .combine(favoritesBooksRepository.getFavoritesBookIds()) { state, favoritesBookIds ->
+            this@BookSearchViewModel.favoritesBookIds = favoritesBookIds
+            if (state is BookSearchState.Result) {
+                val books = state.bookList.map {
+                    val isFavorite = favoritesBookIds.contains(it.book.id)
+                    if (it.isFavorite != isFavorite) {
+                        it.copy(isFavorite = isFavorite)
+                    } else {
+                        it
+                    }
+                }
+                state.copy(books)
+            } else {
+                state
+            }
+        }
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery = _searchQuery.asStateFlow()
@@ -71,7 +92,7 @@ class BookSearchViewModel @Inject constructor(
                     cacheRepository.insertAll(bookList)
                     _booksStateFlow.emit(BookSearchState.Result(bookList.map {
                         BookItemUi(
-                            isFavorite = false,
+                            isFavorite = favoritesBookIds.contains(it.id),
                             book = it,
                         )
                     }))

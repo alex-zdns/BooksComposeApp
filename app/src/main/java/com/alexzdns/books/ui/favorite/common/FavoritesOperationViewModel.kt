@@ -26,11 +26,11 @@ class FavoritesOperationViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val isFavorite = favoritesBooksRepository.isFavorites(bookId)
             if (isFavorite) {
-                _notificationSharedFlow.emit(NotificationEvent.RemoveFromFavorites)
                 favoritesBooksRepository.removeToFavorites(bookId)
+                _notificationSharedFlow.emit(NotificationEvent.RemoveFromFavorites)
             } else {
-                _notificationSharedFlow.emit(NotificationEvent.AddToFavorites)
                 favoritesBooksRepository.addToFavorites(bookId)
+                _notificationSharedFlow.emit(NotificationEvent.AddToFavorites)
             }
         }
     }
