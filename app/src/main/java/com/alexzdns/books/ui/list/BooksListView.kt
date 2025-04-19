@@ -55,7 +55,7 @@ private fun BookItemView(item: BookItem, onItemClick: (String) -> Unit) {
             shape = RoundedCornerShape(16.dp),
         ) {
             GlideImage(
-                imageModel = item.imageUrl.orEmpty(),
+                imageModel = item.thumbnailUrl.orEmpty(),
                 contentDescription = null,
                 contentScale = ContentScale.Fit,
                 modifier = Modifier.aspectRatio(154.0f / 230.0f),

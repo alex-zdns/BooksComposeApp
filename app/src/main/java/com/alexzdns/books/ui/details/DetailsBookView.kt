@@ -69,7 +69,7 @@ private fun BookCover(book: BookItem) {
         shape = RoundedCornerShape(24.dp)
     ) {
         GlideImage(
-            imageModel = book.imageUrl.orEmpty(),
+            imageModel = book.imageUrl ?: book.thumbnailUrl.orEmpty(),
             contentDescription = null,
             contentScale = ContentScale.Fit,
             modifier = Modifier.aspectRatio(2.0f / 3.0f),

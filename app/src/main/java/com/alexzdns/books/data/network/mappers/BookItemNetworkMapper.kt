@@ -15,7 +15,8 @@ class BookItemNetworkMapper @Inject constructor() {
             authors = model.volumeInfo.authors ?: return null,
             description = model.volumeInfo.description ?: return null,
             publishedYear = model.volumeInfo.publishedDate.orEmpty(),
-            imageUrl = convertImage(model.volumeInfo.imageLinks?.thumbnail)
+            thumbnailUrl = convertImage(model.volumeInfo.imageLinks?.thumbnail),
+            imageUrl = convertImage(model.volumeInfo.imageLinks?.large)
         )
     }
 
