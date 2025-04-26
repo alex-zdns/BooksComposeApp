@@ -6,4 +6,5 @@ plugins {
     alias(libs.plugins.hiltAndroid) apply false
     alias(libs.plugins.kotlinAndroidKsp) apply false
     alias(libs.plugins.serialization) apply false
+    alias(libs.plugins.jetbrains.kotlin.jvm) apply false
 }
