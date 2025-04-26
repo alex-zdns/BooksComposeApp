@@ -3,7 +3,7 @@ package com.alexzdns.books.data.database.repository
 import com.alexzdns.books.data.database.dao.HistoryBooksDao
 import com.alexzdns.books.data.database.mappers.HistoryDbMapper
 import com.alexzdns.books.domain.repository.HistorySeenBooksRepository
-import com.alexzdns.books.ui.models.BookWithViewTime
+import com.alexzdns.books.domain.models.BookWithViewTime
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

@@ -2,7 +2,7 @@ package com.alexzdns.books.data.database.mappers
 
 import com.alexzdns.books.data.database.models.HistoryEntity
 import com.alexzdns.books.data.database.models.BookEntityWithViewTime
-import com.alexzdns.books.ui.models.BookWithViewTime
+import com.alexzdns.books.domain.models.BookWithViewTime
 import javax.inject.Inject
 
 class HistoryDbMapper @Inject constructor(
