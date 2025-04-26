@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-class VolumeInfoDTO(
+internal class VolumeInfoDTO(
     @SerialName("title")
     val title: String? = null,
     @SerialName("authors")

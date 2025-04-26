@@ -17,7 +17,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class NetworkModule {
+internal class NetworkModule {
 
     companion object {
         private const val BASE_URL = "https://www.googleapis.com/books/v1/"

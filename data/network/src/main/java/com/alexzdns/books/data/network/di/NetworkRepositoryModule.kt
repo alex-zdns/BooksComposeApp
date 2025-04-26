@@ -9,7 +9,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class NetworkRepositoryModule {
+internal abstract class NetworkRepositoryModule {
     @Binds
     abstract fun bindBookRepository(repository: BookRepositoryImpl): BookRepository
 }

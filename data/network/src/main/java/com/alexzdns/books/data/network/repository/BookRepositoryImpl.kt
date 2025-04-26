@@ -6,7 +6,7 @@ import com.alexzdns.books.domain.models.BookItem
 import com.alexzdns.books.domain.repository.BookRepository
 import javax.inject.Inject
 
-class BookRepositoryImpl @Inject constructor(
+internal class BookRepositoryImpl @Inject constructor(
     private val booksApi: BooksApi,
     private val itemMapper: BookItemNetworkMapper
 ) : BookRepository {

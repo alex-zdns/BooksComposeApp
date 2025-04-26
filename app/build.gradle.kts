@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlinAndroidKsp)
     alias(libs.plugins.hiltAndroid)
-    alias(libs.plugins.serialization)
 }
 
 android {
@@ -64,11 +63,6 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.navigation.hilt)
     ksp(libs.hilt.compiler)
-    implementation(libs.okhttp)
-    implementation(libs.logging.interceptor)
-    implementation(libs.retrofit)
-    implementation(libs.serialization.json)
-    implementation(libs.retrofit2.kotlinx.serialization.converter)
 
     implementation(libs.glide)
 
@@ -76,4 +70,5 @@ dependencies {
     ksp(libs.androidx.room.compiler)
 
     implementation(project(":domain"))
+    implementation(project(":data:network"))
 }

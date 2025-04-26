@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class BooksListDTO(
+internal class BooksListDTO(
     @SerialName("totalItems")
     val totalItems: Int?,
     @SerialName("items")

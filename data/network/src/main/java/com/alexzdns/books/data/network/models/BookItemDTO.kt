@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-class BookItemDTO(
+internal class BookItemDTO(
     @SerialName("id")
     val id: String?,
     @SerialName("volumeInfo")

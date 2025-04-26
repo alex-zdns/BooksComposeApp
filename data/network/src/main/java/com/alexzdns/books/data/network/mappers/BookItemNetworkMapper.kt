@@ -4,7 +4,7 @@ import com.alexzdns.books.data.network.models.BookItemDTO
 import com.alexzdns.books.domain.models.BookItem
 import javax.inject.Inject
 
-class BookItemNetworkMapper @Inject constructor() {
+internal class BookItemNetworkMapper @Inject constructor() {
     fun convert(model: BookItemDTO): BookItem? {
         if (model.volumeInfo == null)
             return null
