@@ -1,9 +1,9 @@
-package com.alexzdns.books.ui.favorite.common
+package com.alexzdns.books.ui.common.favorites
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexzdns.books.domain.repository.FavoritesBooksRepository
-import com.alexzdns.books.ui.models.NotificationEvent
+import com.alexzdns.books.ui.core.models.NotificationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow

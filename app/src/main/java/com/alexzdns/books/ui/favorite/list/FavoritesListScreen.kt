@@ -20,9 +20,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexzdns.books.R
-import com.alexzdns.books.ui.favorite.common.FavoritesOperationViewModel
-import com.alexzdns.books.ui.list.BooksListView
-import com.alexzdns.books.ui.theme.Typography
+import com.alexzdns.books.ui.common.favorites.FavoritesOperationViewModel
+import com.alexzdns.books.ui.common.list.BooksListView
+import com.alexzdns.books.ui.core.theme.Typography
 
 @Composable
 fun FavoritesScreen(

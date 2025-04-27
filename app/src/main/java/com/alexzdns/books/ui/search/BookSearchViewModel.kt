@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.alexzdns.books.domain.repository.BookCacheRepository
 import com.alexzdns.books.domain.repository.BookRepository
 import com.alexzdns.books.domain.repository.FavoritesBooksRepository
-import com.alexzdns.books.ui.models.BookItemUi
+import com.alexzdns.books.ui.core.models.BookItemUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview

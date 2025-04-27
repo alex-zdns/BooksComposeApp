@@ -22,8 +22,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.alexzdns.books.R
 import com.alexzdns.books.domain.models.BookItem
-import com.alexzdns.books.ui.theme.Typography
-import com.alexzdns.books.ui.theme.darkGrey
+import com.alexzdns.books.ui.core.theme.Typography
+import com.alexzdns.books.ui.core.theme.darkGrey
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable

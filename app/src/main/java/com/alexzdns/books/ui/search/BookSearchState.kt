@@ -1,6 +1,6 @@
 package com.alexzdns.books.ui.search
 
-import com.alexzdns.books.ui.models.BookItemUi
+import com.alexzdns.books.ui.core.models.BookItemUi
 
 sealed interface BookSearchState {
     data object EmptyQuery : BookSearchState

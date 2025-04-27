@@ -20,12 +20,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexzdns.books.R
-import com.alexzdns.books.ui.common.ErrorView
-import com.alexzdns.books.ui.common.LoaderView
-import com.alexzdns.books.ui.common.MessageView
-import com.alexzdns.books.ui.favorite.common.FavoritesOperationViewModel
-import com.alexzdns.books.ui.list.BooksListView
-import com.alexzdns.books.ui.theme.lightGrey
+import com.alexzdns.books.ui.common.favorites.FavoritesOperationViewModel
+import com.alexzdns.books.ui.core.views.ErrorView
+import com.alexzdns.books.ui.core.views.LoaderView
+import com.alexzdns.books.ui.core.views.MessageView
+import com.alexzdns.books.ui.common.list.BooksListView
+import com.alexzdns.books.ui.core.theme.lightGrey
 
 @Composable
 fun BookSearchScreen(

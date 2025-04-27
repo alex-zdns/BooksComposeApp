@@ -42,7 +42,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -69,4 +68,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data:network"))
     implementation(project(":data:database"))
+    implementation(project(":ui:core"))
+    implementation(project(":ui:common:list"))
+    implementation(project(":ui:common:favorites-core"))
 }

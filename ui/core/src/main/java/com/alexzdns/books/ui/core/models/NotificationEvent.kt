@@ -1,4 +1,4 @@
-package com.alexzdns.books.ui.models
+package com.alexzdns.books.ui.core.models
 
 sealed interface NotificationEvent {
     data object AddToFavorites: NotificationEvent

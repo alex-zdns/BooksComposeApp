@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_message">Ошибка выполнения запроса, попробуйте повторить</string>
+    <string name="retry">Попробовать еще</string>
+
+</resources>

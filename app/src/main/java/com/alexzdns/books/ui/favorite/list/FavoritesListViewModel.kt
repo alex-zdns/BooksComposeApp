@@ -2,7 +2,7 @@ package com.alexzdns.books.ui.favorite.list
 
 import androidx.lifecycle.ViewModel
 import com.alexzdns.books.domain.repository.BookCacheRepository
-import com.alexzdns.books.ui.models.BookItemUi
+import com.alexzdns.books.ui.core.models.BookItemUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

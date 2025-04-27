@@ -1,4 +1,4 @@
-package com.alexzdns.books.ui.theme
+package com.alexzdns.books.ui.core.theme
 
 import androidx.compose.ui.graphics.Color
 

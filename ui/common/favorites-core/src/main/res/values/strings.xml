@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_book_to_favorite_message">Книга успешно добавлена в избранное</string>
+    <string name="remove_book_from_favorite_message">Книга успешно удалена из избранного</string>
+</resources>

@@ -1,4 +1,4 @@
-package com.alexzdns.books.ui.models
+package com.alexzdns.books.ui.core.models
 
 import com.alexzdns.books.domain.models.BookItem
 

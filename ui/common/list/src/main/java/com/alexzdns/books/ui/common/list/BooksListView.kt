@@ -1,4 +1,4 @@
-package com.alexzdns.books.ui.list
+package com.alexzdns.books.ui.common.list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,28 +11,28 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import com.alexzdns.books.ui.theme.Typography
-import com.alexzdns.books.ui.theme.darkGrey
-import com.skydoves.landscapist.glide.GlideImage
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ShapeDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import com.alexzdns.books.R
-import com.alexzdns.books.ui.models.BookItemUi
-import com.alexzdns.books.ui.theme.lightGrey
-import com.alexzdns.books.ui.theme.red
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import com.alexzdns.books.ui.core.R
+import com.alexzdns.books.ui.core.models.BookItemUi
+import com.alexzdns.books.ui.core.theme.Typography
+import com.alexzdns.books.ui.core.theme.darkGrey
+import com.alexzdns.books.ui.core.theme.lightGrey
+import com.alexzdns.books.ui.core.theme.red
+import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
 fun BooksListView(

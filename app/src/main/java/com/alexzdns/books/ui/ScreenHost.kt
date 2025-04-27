@@ -46,13 +46,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavDestination.Companion.hierarchy
-import com.alexzdns.books.R
-import com.alexzdns.books.ui.favorite.common.FavoritesOperationViewModel
-import com.alexzdns.books.ui.models.NotificationEvent
+import com.alexzdns.books.ui.core.R
+import com.alexzdns.books.ui.common.favorites.R as FavoritesCoreR
+import com.alexzdns.books.ui.common.favorites.FavoritesOperationViewModel
+import com.alexzdns.books.ui.core.models.NotificationEvent
 import com.alexzdns.books.ui.navigation.destination.DETAILS_ROUTE
-import com.alexzdns.books.ui.theme.Typography
-import com.alexzdns.books.ui.theme.blue
-import com.alexzdns.books.ui.theme.lightGrey
+import com.alexzdns.books.ui.core.theme.Typography
+import com.alexzdns.books.ui.core.theme.blue
+import com.alexzdns.books.ui.core.theme.lightGrey
 
 val LocalSnackbarHostState = compositionLocalOf<SnackbarHostState> {
     error("No Snackbar Host State")
@@ -172,8 +173,8 @@ private fun SnackBarObserver() {
         viewModel.notificationSharedFlow.collect {
             snackbarHostState.showSnackbar(
                 message = when (it) {
-                    NotificationEvent.AddToFavorites -> context.getString(R.string.add_book_to_favorite_message)
-                    NotificationEvent.RemoveFromFavorites -> context.getString(R.string.remove_book_from_favorite_message)
+                    NotificationEvent.AddToFavorites -> context.getString(FavoritesCoreR.string.add_book_to_favorite_message)
+                    NotificationEvent.RemoveFromFavorites -> context.getString(FavoritesCoreR.string.remove_book_from_favorite_message)
                 },
                 duration = SnackbarDuration.Short
             )
