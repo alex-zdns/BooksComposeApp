@@ -68,7 +68,13 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data:network"))
     implementation(project(":data:database"))
+
     implementation(project(":ui:core"))
+
     implementation(project(":ui:common:list"))
     implementation(project(":ui:common:favorites-core"))
+
+    implementation(project(":ui:features:details"))
+    implementation(project(":ui:features:favorites"))
+    implementation(project(":ui:features:search"))
 }

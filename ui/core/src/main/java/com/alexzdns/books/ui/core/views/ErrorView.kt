@@ -17,7 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexzdns.books.ui.core.R
-import com.alexzdns.books.ui.core.theme.Typography
+import com.alexzdns.books.ui.core.theme.TypographyApp
 
 @Composable
 fun ErrorView(
@@ -33,7 +33,7 @@ fun ErrorView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 20.dp, end = 20.dp),
-                style = Typography.titleLarge,
+                style = TypographyApp.titleLarge,
                 textAlign = TextAlign.Center
             )
             Button(
@@ -45,7 +45,7 @@ fun ErrorView(
             ) {
                 Text(
                     text = stringResource(R.string.retry),
-                    style = Typography.bodyMedium
+                    style = TypographyApp.bodyMedium
                 )
             }
         }

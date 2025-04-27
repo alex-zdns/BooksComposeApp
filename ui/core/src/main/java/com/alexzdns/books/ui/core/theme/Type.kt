@@ -7,7 +7,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 // Set of Material typography styles to start with
-val Typography = Typography(
+val TypographyApp = Typography(
     // Bold_18
     headlineLarge = TextStyle(
         fontFamily = FontFamily.Default,

@@ -2,5 +2,4 @@
 <resources>
     <string name="error_message">Ошибка выполнения запроса, попробуйте повторить</string>
     <string name="retry">Попробовать еще</string>
-
 </resources>

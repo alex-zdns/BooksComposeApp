@@ -28,7 +28,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.alexzdns.books.ui.core.R
 import com.alexzdns.books.ui.core.models.BookItemUi
-import com.alexzdns.books.ui.core.theme.Typography
+import com.alexzdns.books.ui.core.theme.TypographyApp
 import com.alexzdns.books.ui.core.theme.darkGrey
 import com.alexzdns.books.ui.core.theme.lightGrey
 import com.alexzdns.books.ui.core.theme.red
@@ -103,7 +103,7 @@ private fun BookItemView(
             text = book.authors.joinToString(),
             Modifier.padding(top = 8.dp),
             color = darkGrey,
-            style = Typography.bodySmall,
+            style = TypographyApp.bodySmall,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
@@ -112,7 +112,7 @@ private fun BookItemView(
             text = book.title,
             Modifier.padding(top = 4.dp),
             color = Color.Black,
-            style = Typography.bodySmall,
+            style = TypographyApp.bodySmall,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )

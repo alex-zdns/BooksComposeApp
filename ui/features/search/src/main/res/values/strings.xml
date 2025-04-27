@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empty_result_message">По вашему запросу ничего не найдено</string>
+    <string name="empty_query_message">Введите название книги, которую ищете </string>
+    <string name="search_title">Поиск</string>
+</resources>

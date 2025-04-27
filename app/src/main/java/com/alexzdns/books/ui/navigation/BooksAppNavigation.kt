@@ -3,11 +3,11 @@ package com.alexzdns.books.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.alexzdns.books.ui.navigation.destination.MAIN_SCREEN_ROUTE
-import com.alexzdns.books.ui.navigation.destination.bookDetails
-import com.alexzdns.books.ui.navigation.destination.favorites
-import com.alexzdns.books.ui.navigation.destination.main
-import com.alexzdns.books.ui.navigation.destination.navigateToBookDetails
+import com.alexzdns.books.ui.features.search.SEARCH_SCREEN_ROUTE
+import com.alexzdns.books.ui.features.details.bookDetails
+import com.alexzdns.books.ui.features.favorites.favorites
+import com.alexzdns.books.ui.features.search.search
+import com.alexzdns.books.ui.features.details.navigateToBookDetails
 
 @Composable
 fun BookAppNavigation(
@@ -15,9 +15,9 @@ fun BookAppNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = MAIN_SCREEN_ROUTE,
+        startDestination = SEARCH_SCREEN_ROUTE,
     ) {
-        main(onBookClick = navController::navigateToBookDetails)
+        search(onBookClick = navController::navigateToBookDetails)
         favorites(
             onBackClick = navController::popBackStack,
             onBookClick = navController::navigateToBookDetails

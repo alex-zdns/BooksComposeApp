@@ -50,8 +50,8 @@ import com.alexzdns.books.ui.core.R
 import com.alexzdns.books.ui.common.favorites.R as FavoritesCoreR
 import com.alexzdns.books.ui.common.favorites.FavoritesOperationViewModel
 import com.alexzdns.books.ui.core.models.NotificationEvent
-import com.alexzdns.books.ui.navigation.destination.DETAILS_ROUTE
-import com.alexzdns.books.ui.core.theme.Typography
+import com.alexzdns.books.ui.features.details.DETAILS_ROUTE
+import com.alexzdns.books.ui.core.theme.TypographyApp
 import com.alexzdns.books.ui.core.theme.blue
 import com.alexzdns.books.ui.core.theme.lightGrey
 
@@ -130,7 +130,7 @@ fun RowScope.AddItem(
         label = {
             Text(
                 text = stringResource(screen.title),
-                style = Typography.labelMedium,
+                style = TypographyApp.labelMedium,
             )
         },
         icon = {
@@ -198,7 +198,7 @@ fun CustomSnackBar(
             Text(
                 text = message,
                 color = Color.White,
-                style = Typography.bodySmall,
+                style = TypographyApp.bodySmall,
                 modifier = Modifier.weight(1f),
             )
             Icon(

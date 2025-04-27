@@ -52,7 +52,7 @@ fun BooksComposeAppTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = TypographyApp,
         content = content
     )
 }
