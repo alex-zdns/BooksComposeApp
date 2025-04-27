@@ -8,7 +8,7 @@ import com.alexzdns.books.data.database.models.BookEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface BooksDao {
+internal interface BooksDao {
     @Query("SELECT * FROM books WHERE _id = :bookId")
     suspend fun loadById(bookId: String): BookEntity?
 

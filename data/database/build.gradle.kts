@@ -1,19 +1,16 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.serialization)
     alias(libs.plugins.kotlinAndroidKsp)
     alias(libs.plugins.hiltAndroid)
 }
 
 android {
-    namespace = "com.alexzdns.books.data.network"
+    namespace = "com.alexzdns.books.data.database"
     compileSdk = 35
 
     defaultConfig {
         minSdk = 28
-
-        consumerProguardFiles("consumer-rules.pro")
     }
 
     compileOptions {
@@ -30,12 +27,9 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
 
-    implementation(libs.okhttp)
-    implementation(libs.logging.interceptor)
-    implementation(libs.retrofit)
-    implementation(libs.serialization.json)
-    implementation(libs.retrofit2.kotlinx.serialization.converter)
-
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 }

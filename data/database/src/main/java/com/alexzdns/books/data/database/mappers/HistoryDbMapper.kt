@@ -5,7 +5,7 @@ import com.alexzdns.books.data.database.models.BookEntityWithViewTime
 import com.alexzdns.books.domain.models.BookWithViewTime
 import javax.inject.Inject
 
-class HistoryDbMapper @Inject constructor(
+internal class HistoryDbMapper @Inject constructor(
     private val bookMapper: BookDbMapper,
 ) {
     fun toEntity(bookId: String): HistoryEntity {

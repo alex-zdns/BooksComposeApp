@@ -2,7 +2,7 @@ package com.alexzdns.books.data.database.models
 
 import android.provider.BaseColumns
 
-object DbContract {
+internal object DbContract {
     const val DATABASE_NAME = "BooksApp.db"
 
     object Books {

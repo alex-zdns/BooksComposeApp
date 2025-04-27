@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
     tableName = DbContract.Books.TABLE_NAME,
     indices = [Index(DbContract.Books.COLUMN_NAME_ID, unique = true)]
 )
-data class BookEntity(
+internal data class BookEntity(
     @PrimaryKey
     @ColumnInfo(name = DbContract.Books.COLUMN_NAME_ID)
     val id: String,

@@ -4,7 +4,7 @@ import com.alexzdns.books.data.database.models.BookEntity
 import com.alexzdns.books.domain.models.BookItem
 import javax.inject.Inject
 
-class BookDbMapper @Inject constructor() {
+internal class BookDbMapper @Inject constructor() {
     private companion object {
         const val SEPARATOR = "$$$"
     }

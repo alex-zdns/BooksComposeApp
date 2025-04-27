@@ -13,7 +13,7 @@ import com.alexzdns.books.data.database.models.HistoryEntity
     entities = [BookEntity::class, FavoriteEntity::class, HistoryEntity::class],
     version = 1
 )
-abstract class BooksAppDatabase : RoomDatabase() {
+internal abstract class BooksAppDatabase : RoomDatabase() {
     abstract val booksDao: BooksDao
     abstract val favoritesBooksDao: FavoritesBooksDao
     abstract val historyBooksDao: HistoryBooksDao

@@ -18,7 +18,7 @@ import androidx.room.PrimaryKey
             onDelete = ForeignKey.CASCADE
         )]
 )
-data class FavoriteEntity(
+internal data class FavoriteEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = DbContract.Favorites.COLUMN_NAME_ID)
     val id: Int,

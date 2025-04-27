@@ -9,7 +9,7 @@ import com.alexzdns.books.data.database.models.BookEntityWithViewTime
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface HistoryBooksDao {
+internal interface HistoryBooksDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(book: HistoryEntity)
 

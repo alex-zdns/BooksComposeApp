@@ -3,7 +3,7 @@ package com.alexzdns.books.data.database.models
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 
-data class BookEntityWithViewTime(
+internal data class BookEntityWithViewTime(
     @Embedded
     val book: BookEntity,
 

@@ -8,7 +8,7 @@ import com.alexzdns.books.data.database.models.FavoriteEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface FavoritesBooksDao {
+internal interface FavoritesBooksDao {
     @Query("SELECT book_id FROM favorites")
     fun getFavoritesBookIds(): Flow<List<String>>
 

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class BookCacheRepositoryImpl @Inject constructor(
+internal class BookCacheRepositoryImpl @Inject constructor(
     private val dao: BooksDao,
     private val mapper: BookDbMapper,
 ) : BookCacheRepository {

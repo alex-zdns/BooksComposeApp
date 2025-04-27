@@ -16,7 +16,7 @@ import androidx.room.PrimaryKey
             onDelete = ForeignKey.CASCADE
         )]
 )
-data class HistoryEntity(
+internal data class HistoryEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = DbContract.History.COLUMN_NAME_ID)
     val id: Int,

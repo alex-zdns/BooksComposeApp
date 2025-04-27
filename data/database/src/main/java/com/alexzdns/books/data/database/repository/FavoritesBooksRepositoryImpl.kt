@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class FavoritesBooksRepositoryImpl @Inject constructor(
+internal class FavoritesBooksRepositoryImpl @Inject constructor(
     private val favoritesBooksDao: FavoritesBooksDao,
     private val favoritesBooksDbMapper: FavoritesBooksDbMapper
 ) : FavoritesBooksRepository {
