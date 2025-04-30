@@ -18,7 +18,6 @@ import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarData
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
@@ -27,15 +26,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.alexzdns.books.ui.navigation.BookAppNavigation
-import com.alexzdns.books.ui.navigation.BottomNavigationTab
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -46,14 +40,21 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavDestination.Companion.hierarchy
-import com.alexzdns.books.ui.core.R
-import com.alexzdns.books.ui.common.favorites.R as FavoritesCoreR
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.alexzdns.books.ui.common.favorites.FavoritesOperationViewModel
-import com.alexzdns.books.ui.core.models.NotificationEvent
-import com.alexzdns.books.ui.features.details.DETAILS_ROUTE
+import com.alexzdns.books.ui.core.R
+import com.alexzdns.books.ui.core.models.SnackBarBookVisuals
 import com.alexzdns.books.ui.core.theme.TypographyApp
 import com.alexzdns.books.ui.core.theme.blue
 import com.alexzdns.books.ui.core.theme.lightGrey
+import com.alexzdns.books.ui.extensions.toSnackBarVisual
+import com.alexzdns.books.ui.features.details.DETAILS_ROUTE
+import com.alexzdns.books.ui.navigation.BookAppNavigation
+import com.alexzdns.books.ui.navigation.BottomNavigationTab
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 val LocalSnackbarHostState = compositionLocalOf<SnackbarHostState> {
     error("No Snackbar Host State")
@@ -73,11 +74,12 @@ fun ScreenHost() {
 
         Scaffold(
             snackbarHost = {
-                SnackbarHost(hostState = snackbarHostState) { snackbarData: SnackbarData ->
+                SnackbarHost(hostState = snackbarHostState) { data: SnackbarData ->
+                    val visuals = data.visuals as? SnackBarBookVisuals
                     CustomSnackBar(
-                        message = snackbarData.visuals.message,
-                        containerColor = blue,
-                        onDismissClick = { snackbarData.dismiss() }
+                        message = data.visuals.message,
+                        containerColor = visuals?.color ?: blue,
+                        onDismissClick = { data.dismiss() }
                     )
                 }
             },
@@ -170,14 +172,13 @@ private fun SnackBarObserver() {
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
+        var job: Job? = null
+
         viewModel.notificationSharedFlow.collect {
-            snackbarHostState.showSnackbar(
-                message = when (it) {
-                    NotificationEvent.AddToFavorites -> context.getString(FavoritesCoreR.string.add_book_to_favorite_message)
-                    NotificationEvent.RemoveFromFavorites -> context.getString(FavoritesCoreR.string.remove_book_from_favorite_message)
-                },
-                duration = SnackbarDuration.Short
-            )
+            job?.cancel()
+            job = launch {
+                snackbarHostState.showSnackbar(it.toSnackBarVisual(context))
+            }
         }
     }
 }
