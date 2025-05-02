@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 data class SnackBarBookVisuals(
     override val message: String,
     override val actionLabel: String? = null,
-    override val withDismissAction: Boolean = false,
+    override val withDismissAction: Boolean = true,
     override val duration: SnackbarDuration = SnackbarDuration.Short,
     val color: Color,
 ): SnackbarVisuals

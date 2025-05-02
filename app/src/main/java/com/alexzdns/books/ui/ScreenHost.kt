@@ -1,15 +1,13 @@
 package com.alexzdns.books.ui
 
 import androidx.activity.compose.LocalActivity
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -28,12 +26,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -44,7 +40,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.alexzdns.books.ui.common.favorites.FavoritesOperationViewModel
-import com.alexzdns.books.ui.core.R
 import com.alexzdns.books.ui.core.models.SnackBarBookVisuals
 import com.alexzdns.books.ui.core.theme.TypographyApp
 import com.alexzdns.books.ui.core.theme.blue
@@ -76,10 +71,11 @@ fun ScreenHost() {
             snackbarHost = {
                 SnackbarHost(hostState = snackbarHostState) { data: SnackbarData ->
                     val visuals = data.visuals as? SnackBarBookVisuals
-                    CustomSnackBar(
-                        message = data.visuals.message,
+                    Snackbar(
+                        snackbarData = data,
+                        modifier = Modifier.padding(vertical = 0.dp, horizontal = 8.dp),
+                        shape = RoundedCornerShape(12.dp),
                         containerColor = visuals?.color ?: blue,
-                        onDismissClick = { data.dismiss() }
                     )
                 }
             },
@@ -179,39 +175,6 @@ private fun SnackBarObserver() {
             job = launch {
                 snackbarHostState.showSnackbar(it.toSnackBarVisual(context))
             }
-        }
-    }
-}
-
-@Composable
-fun CustomSnackBar(
-    message: String,
-    containerColor: Color = blue,
-    onDismissClick: () -> Unit,
-) {
-    Snackbar(
-        Modifier
-            .fillMaxWidth()
-            .padding(vertical = 10.dp, horizontal = 20.dp),
-        containerColor = containerColor
-    ) {
-        Row(Modifier.padding(top = 22.dp, bottom = 22.dp, start = 10.dp, end = 10.dp)) {
-            Text(
-                text = message,
-                color = Color.White,
-                style = TypographyApp.bodySmall,
-                modifier = Modifier.weight(1f),
-            )
-            Icon(
-                painter = painterResource(R.drawable.ic_close),
-                contentDescription = null,
-                modifier = Modifier
-                    .clickable {
-                        onDismissClick()
-                    }
-                    .padding(start = 8.dp)
-                    .align(Alignment.CenterVertically)
-            )
         }
     }
 }
