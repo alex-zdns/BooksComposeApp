@@ -74,7 +74,8 @@ dependencies {
     implementation(project(":ui:common:list"))
     implementation(project(":ui:common:favorites-core"))
 
-    implementation(project(":ui:features:details"))
-    implementation(project(":ui:features:favorites"))
     implementation(project(":ui:features:search"))
+    implementation(project(":ui:features:favorites"))
+    implementation(project(":ui:features:history"))
+    implementation(project(":ui:features:details"))
 }

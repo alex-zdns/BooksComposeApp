@@ -157,6 +157,7 @@ fun RowScope.AddItem(
 private val bottomNavigationTab = listOf(
     BottomNavigationTab.Search,
     BottomNavigationTab.Favorite,
+    BottomNavigationTab.History,
 )
 
 @Composable
