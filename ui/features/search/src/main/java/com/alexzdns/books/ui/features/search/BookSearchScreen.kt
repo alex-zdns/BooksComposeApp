@@ -3,8 +3,11 @@ package com.alexzdns.books.ui.features.search
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
@@ -12,19 +15,24 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexzdns.books.ui.common.favorites.FavoritesOperationViewModel
+import com.alexzdns.books.ui.common.list.BooksListView
+import com.alexzdns.books.ui.core.theme.blue
+import com.alexzdns.books.ui.core.theme.lightGrey
 import com.alexzdns.books.ui.core.views.ErrorView
 import com.alexzdns.books.ui.core.views.LoaderView
 import com.alexzdns.books.ui.core.views.MessageView
-import com.alexzdns.books.ui.common.list.BooksListView
-import com.alexzdns.books.ui.core.theme.lightGrey
 
 @Composable
 fun BookSearchScreen(
@@ -32,7 +40,8 @@ fun BookSearchScreen(
     viewModel: BookSearchViewModel = hiltViewModel(),
 ) {
     val queryState = viewModel.searchQuery.collectAsStateWithLifecycle()
-    val screenState = viewModel.booksStateFlow.collectAsStateWithLifecycle(BookSearchState.EmptyQuery)
+    val screenState =
+        viewModel.booksStateFlow.collectAsStateWithLifecycle(BookSearchState.EmptyQuery)
 
     val favoritesOperationViewModel: FavoritesOperationViewModel =
         hiltViewModel(LocalActivity.current as ViewModelStoreOwner)
@@ -62,40 +71,57 @@ private fun Toolbar(
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    SearchBar(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp, start = 20.dp, end = 20.dp, bottom = 12.dp),
-        inputField = {
-            SearchBarDefaults.InputField(
-                query = query,
-                onQueryChange = onQueryChange,
-                onSearch = {
-                    keyboardController?.hide()
-                },
-                expanded = false,
-                onExpandedChange = { },
-                leadingIcon = {
-                    Icon(
-                        Icons.Default.Search,
-                        contentDescription = null,
-                        tint = lightGrey
-                    )
-                },
-                trailingIcon = {
-                    if (query.isNotBlank()) {
+    Row(Modifier.fillMaxWidth()) {
+        SearchBar(
+            modifier = Modifier
+                .padding(top = 8.dp, start = 20.dp, bottom = 12.dp)
+                .weight(1.0f),
+            inputField = {
+                SearchBarDefaults.InputField(
+                    query = query,
+                    onQueryChange = onQueryChange,
+                    onSearch = {
+                        keyboardController?.hide()
+                    },
+                    expanded = false,
+                    onExpandedChange = { },
+                    leadingIcon = {
                         Icon(
-                            Icons.Default.Clear,
-                            contentDescription = "clear",
-                            modifier = Modifier.clickable {
-                                onQueryChange("")
-                            })
-                    }
-                },
+                            Icons.Default.Search,
+                            contentDescription = null,
+                            tint = lightGrey
+                        )
+                    },
+                    trailingIcon = {
+                        if (query.isNotBlank()) {
+                            Icon(
+                                Icons.Default.Clear,
+                                contentDescription = "clear",
+                                modifier = Modifier.clickable {
+                                    onQueryChange("")
+                                })
+                        }
+                    },
+                )
+            },
+            expanded = false,
+            onExpandedChange = { },
+            content = { },
+        )
+        Surface(
+            shape = RoundedCornerShape(12.dp),
+            color = Color(0xFFF7F7F7),
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .padding(start = 8.dp, end = 20.dp)
+                .wrapContentWidth(),
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_filter_24),
+                tint = blue,
+                contentDescription = null,
+                modifier = Modifier.padding(4.dp)
             )
-        },
-        expanded = false,
-        onExpandedChange = { },
-        content = { },
-    )
+        }
+    }
 }
