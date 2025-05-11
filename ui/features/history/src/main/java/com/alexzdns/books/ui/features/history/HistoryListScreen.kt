@@ -2,14 +2,12 @@ package com.alexzdns.books.ui.features.history
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.alexzdns.books.ui.core.views.Toolbar
 import androidx.compose.foundation.lazy.items
-import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -27,10 +25,9 @@ fun HistoryListScreen(
         )
 
         LazyColumn {
-
-            booksState.value.forEach {
-                stickyHeader { DayStickyItem(it.day) }
-                items(it.books) { book ->
+            booksState.value.forEach { group ->
+                stickyHeader { DayStickyItem(group.day) }
+                items(group.books) { book ->
                     HistoryItem(book, onBookClick)
                 }
             }
