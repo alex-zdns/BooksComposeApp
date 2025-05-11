@@ -1,4 +1,4 @@
-package com.alexzdns.books.ui.features.search
+package com.alexzdns.books.ui.features.search.list
 
 import com.alexzdns.books.ui.core.models.BookItemUi
 

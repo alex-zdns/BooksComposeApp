@@ -1,7 +1,8 @@
-package com.alexzdns.books.ui.features.search
+package com.alexzdns.books.ui.features.search.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.alexzdns.books.domain.models.BookSortType
 import com.alexzdns.books.domain.repository.BookCacheRepository
 import com.alexzdns.books.domain.repository.BookRepository
 import com.alexzdns.books.domain.repository.FavoritesBooksRepository
@@ -57,6 +58,8 @@ class BookSearchViewModel @Inject constructor(
 
     private val debounceSearch = MutableStateFlow("")
 
+    var bookSortType: BookSortType = BookSortType.NONE
+        private set
     private var searchJob: Job? = null
 
     init {
@@ -80,6 +83,13 @@ class BookSearchViewModel @Inject constructor(
         }
     }
 
+    fun onApplyFilterClick(bookSortType: BookSortType) {
+        this.bookSortType = bookSortType
+        if (debounceSearch.value.isNotBlank()) {
+            searchBooks(debounceSearch.value)
+        }
+    }
+
     private fun searchBooks(query: String) {
         searchJob?.cancel()
 
@@ -87,7 +97,10 @@ class BookSearchViewModel @Inject constructor(
             _booksStateFlow.emit(BookSearchState.Loading)
 
             try {
-                val bookList = bookRepository.searchBooks(query)
+                val bookList = bookRepository.searchBooks(
+                    query = query,
+                    sortType = bookSortType,
+                )
                 if (bookList.isNotEmpty()) {
                     cacheRepository.insertAll(bookList)
                     _booksStateFlow.emit(BookSearchState.Result(bookList.map {

@@ -1,8 +1,13 @@
 package com.alexzdns.books.domain.repository
 
 import com.alexzdns.books.domain.models.BookItem
+import com.alexzdns.books.domain.models.BookSortType
 
 interface BookRepository {
-    suspend fun searchBooks(query: String): List<BookItem>
+    suspend fun searchBooks(
+        query: String,
+        sortType: BookSortType = BookSortType.NONE
+    ): List<BookItem>
+
     suspend fun getBook(id: String): BookItem
 }

@@ -8,7 +8,7 @@ import com.alexzdns.books.ui.features.search.R as SearchR
 import com.alexzdns.books.ui.features.favorites.R as FavoritesR
 import com.alexzdns.books.ui.features.history.R as HistoryR
 import com.alexzdns.books.ui.features.favorites.FAVORITES_SCREEN_ROUTE
-import com.alexzdns.books.ui.features.search.SEARCH_SCREEN_ROUTE
+import com.alexzdns.books.ui.features.search.list.SEARCH_SCREEN_ROUTE
 
 sealed class BottomNavigationTab(
     val route: String,

@@ -9,7 +9,8 @@ import retrofit2.http.Query
 internal interface BooksApi {
     @GET("volumes")
     suspend fun searchBooksList(
-        @Query("q") query: String
+        @Query("q") searchQuery: String,
+        @Query("orderBy") orderBy: String?,
     ): BooksListDTO
 
     @GET("volumes/{volumeId}")

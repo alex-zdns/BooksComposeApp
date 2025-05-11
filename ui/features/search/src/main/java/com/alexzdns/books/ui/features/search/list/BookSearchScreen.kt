@@ -1,4 +1,4 @@
-package com.alexzdns.books.ui.features.search
+package com.alexzdns.books.ui.features.search.list
 
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.clickable
@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.alexzdns.books.domain.models.BookSortType
 import com.alexzdns.books.ui.common.favorites.FavoritesOperationViewModel
 import com.alexzdns.books.ui.common.list.BooksListView
 import com.alexzdns.books.ui.core.theme.blue
@@ -33,10 +34,12 @@ import com.alexzdns.books.ui.core.theme.lightGrey
 import com.alexzdns.books.ui.core.views.ErrorView
 import com.alexzdns.books.ui.core.views.LoaderView
 import com.alexzdns.books.ui.core.views.MessageView
+import com.alexzdns.books.ui.features.search.R
 
 @Composable
 fun BookSearchScreen(
     onBookClick: (String) -> Unit = {},
+    onFilterClick: (type: BookSortType?) -> Unit = {},
     viewModel: BookSearchViewModel = hiltViewModel(),
 ) {
     val queryState = viewModel.searchQuery.collectAsStateWithLifecycle()
@@ -47,7 +50,13 @@ fun BookSearchScreen(
         hiltViewModel(LocalActivity.current as ViewModelStoreOwner)
 
     Column {
-        Toolbar(queryState.value, viewModel::onQueryChange)
+        Toolbar(
+            queryState.value,
+            viewModel::onQueryChange,
+            onFilterClick = {
+                onFilterClick.invoke(viewModel.bookSortType)
+            }
+        )
 
         when (val result = screenState.value) {
             BookSearchState.EmptyQuery -> MessageView(R.string.empty_query_message)
@@ -68,6 +77,7 @@ fun BookSearchScreen(
 private fun Toolbar(
     query: String,
     onQueryChange: (String) -> Unit,
+    onFilterClick: () -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -114,6 +124,7 @@ private fun Toolbar(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .padding(start = 8.dp, end = 20.dp)
+                .clickable(onClick = onFilterClick)
                 .wrapContentWidth(),
         ) {
             Icon(
