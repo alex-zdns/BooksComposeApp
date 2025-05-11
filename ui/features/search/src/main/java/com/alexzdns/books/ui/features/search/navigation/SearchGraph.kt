@@ -16,6 +16,6 @@ fun NavGraphBuilder.searchGraph(navController: NavController, onBookClick: (Stri
         route = SEARCH_GRAPH_ROUTE
     ) {
         search(onBookClick, navController::navigateToSearchFilters)
-        filters(navController::popBackStack)
+        filters(navController)
     }
 }

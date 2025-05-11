@@ -40,7 +40,7 @@ import com.alexzdns.books.ui.features.search.R
 fun BookSearchScreen(
     onBookClick: (String) -> Unit = {},
     onFilterClick: (type: BookSortType?) -> Unit = {},
-    viewModel: BookSearchViewModel = hiltViewModel(),
+    viewModel: BookSearchViewModel,
 ) {
     val queryState = viewModel.searchQuery.collectAsStateWithLifecycle()
     val screenState =

@@ -1,5 +1,6 @@
 package com.alexzdns.books.ui.features.search.filtres
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.alexzdns.books.domain.models.BookSortType
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -8,9 +9,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class BookSearchFilterViewModel @Inject constructor() : ViewModel() {
+class BookSearchFilterViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
 
-    private var initState = BookSearchFilterState()
+    private val initState = BookSearchFilterState(
+        selectedSortType = savedStateHandle.get<BookSortType>(SORT_TYPE_KEY) ?: BookSortType.NONE
+    )
 
     private val _state = MutableStateFlow<BookSearchFilterState>(initState)
     val state = _state.asStateFlow()

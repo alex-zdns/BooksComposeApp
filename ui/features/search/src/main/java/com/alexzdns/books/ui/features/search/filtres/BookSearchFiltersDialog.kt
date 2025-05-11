@@ -37,6 +37,7 @@ import com.alexzdns.books.ui.core.R as UiCoreR
 @Composable
 fun SearchFiltersDialog(
     onDismiss: () -> Unit,
+    onApply: (BookSortType) -> Unit,
     viewModel: BookSearchFilterViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
@@ -54,6 +55,7 @@ fun SearchFiltersDialog(
             FilterDialogInternal(
                 state = state.value,
                 onDismiss = onDismiss,
+                onApply = onApply,
                 onSortTypeClick = viewModel::onSortTypeClick
             )
         }
@@ -64,6 +66,7 @@ fun SearchFiltersDialog(
 private fun FilterDialogInternal(
     onDismiss: () -> Unit,
     onSortTypeClick: (BookSortType) -> Unit,
+    onApply: (BookSortType) -> Unit,
     state: BookSearchFilterState,
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -91,7 +94,7 @@ private fun FilterDialogInternal(
 
         Button(
             onClick = {
-                /*onApplyClick.invoke(state.selectedSortType)*/
+                onApply.invoke(state.selectedSortType)
             },
             enabled = state.isEnabledApplyButton,
             modifier = Modifier

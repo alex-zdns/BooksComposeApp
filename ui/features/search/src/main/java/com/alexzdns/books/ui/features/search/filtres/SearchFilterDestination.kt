@@ -8,10 +8,11 @@ import androidx.navigation.compose.dialog
 import androidx.navigation.navArgument
 import com.alexzdns.books.domain.models.BookSortType
 
-const val SEARCH_FILTER_DIALOG_ROUTE = "searchFilterDialog"
-private const val SORT_TYPE_KEY = "searchFilterDialog"
+internal const val SEARCH_FILTER_DIALOG_ROUTE = "searchFilterDialog"
+internal const val SORT_TYPE_KEY = "searchFilterDialog"
+internal const val RESULT_SORT_TYPE_KEY = "result_sort_type"
 
-fun NavGraphBuilder.filters(onBackClick: () -> Unit) {
+fun NavGraphBuilder.filters(navController: NavController) {
     dialog(
         route = "$SEARCH_FILTER_DIALOG_ROUTE/{$SORT_TYPE_KEY}",
         dialogProperties = DialogProperties(usePlatformDefaultWidth = false),
@@ -24,7 +25,13 @@ fun NavGraphBuilder.filters(onBackClick: () -> Unit) {
         )
     ) {
         SearchFiltersDialog(
-            onDismiss = onBackClick
+            onDismiss = navController::popBackStack,
+            onApply = {
+                navController.previousBackStackEntry
+                    ?.savedStateHandle
+                    ?.set(RESULT_SORT_TYPE_KEY, it)
+                navController.popBackStack()
+            }
         )
     }
 }
