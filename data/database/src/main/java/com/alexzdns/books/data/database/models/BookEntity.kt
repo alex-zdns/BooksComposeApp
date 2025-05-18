@@ -20,7 +20,7 @@ internal data class BookEntity(
     @ColumnInfo(name = DbContract.Books.COLUMN_NAME_PUBLISHED_YEAR)
     val publishedYear: String?,
     @ColumnInfo(name = DbContract.Books.COLUMN_NAME_DESCRIPTION)
-    val description: String,
+    val description: String?,
     @ColumnInfo(name = DbContract.Books.COLUMN_NAME_IMAGE_URL)
     val imageUrl: String?,
     @ColumnInfo(name = DbContract.Books.COLUMN_NAME_THUMBNAIL_URL)

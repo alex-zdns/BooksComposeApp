@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal class BookItemDTO(
     @SerialName("id")
-    val id: String?,
+    val id: String,
     @SerialName("volumeInfo")
     val volumeInfo: VolumeInfoDTO? = null
 )

@@ -11,6 +11,7 @@ internal interface BooksApi {
     suspend fun searchBooksList(
         @Query("q") searchQuery: String,
         @Query("orderBy") orderBy: String?,
+        @Query("startIndex") startIndex: Int?
     ): BooksListDTO
 
     @GET("volumes/{volumeId}")

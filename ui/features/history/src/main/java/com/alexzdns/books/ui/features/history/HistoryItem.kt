@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.alexzdns.books.domain.models.BookItem
 import com.alexzdns.books.domain.models.BookWithViewTime
@@ -44,7 +45,10 @@ fun HistoryItem(
             )
 
             Text(
-                text = book.authors.joinToString(),
+                text = if (book.authors.isEmpty())
+                    stringResource(com.alexzdns.books.ui.core.R.string.empty_authors)
+                else
+                    book.authors.joinToString(),
                 Modifier.padding(top = 2.dp),
                 color = darkGrey,
                 style = TypographyApp.bodySmall

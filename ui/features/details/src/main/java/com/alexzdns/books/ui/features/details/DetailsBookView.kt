@@ -37,7 +37,10 @@ fun DetailsBookView(
         BookCover(book)
 
         Text(
-            text = book.authors.joinToString(),
+            text = if (book.authors.isEmpty())
+                stringResource(com.alexzdns.books.ui.core.R.string.empty_authors)
+            else
+                book.authors.joinToString(),
             Modifier
                 .padding(top = 12.dp, start = 20.dp, end = 20.dp)
                 .align(Alignment.CenterHorizontally),
@@ -91,8 +94,8 @@ private fun PublishedYear(
 }
 
 @Composable
-private fun DescriptionBlock(description: String) {
-    if (description.isBlank()) return
+private fun DescriptionBlock(description: String?) {
+    if (description.isNullOrBlank()) return
 
     Card(
         Modifier

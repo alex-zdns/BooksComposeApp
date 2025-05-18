@@ -10,10 +10,10 @@ internal class BookItemNetworkMapper @Inject constructor() {
             return null
 
         return BookItem(
-            id = model.id ?: return null,
-            title = model.volumeInfo.title ?: return null,
-            authors = model.volumeInfo.authors ?: return null,
-            description = model.volumeInfo.description ?: return null,
+            id = model.id,
+            title = model.volumeInfo.title,
+            authors = model.volumeInfo.authors,
+            description = model.volumeInfo.description,
             publishedYear = model.volumeInfo.publishedDate.orEmpty(),
             thumbnailUrl = convertImage(model.volumeInfo.imageLinks?.thumbnail),
             imageUrl = convertImage(model.volumeInfo.imageLinks?.large)

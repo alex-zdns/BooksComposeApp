@@ -2,11 +2,16 @@ package com.alexzdns.books.ui.features.search.list
 
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -26,15 +31,21 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
 import com.alexzdns.books.domain.models.BookSortType
 import com.alexzdns.books.ui.common.favorites.FavoritesOperationViewModel
-import com.alexzdns.books.ui.common.list.BooksListView
+import com.alexzdns.books.ui.common.list.BookItemView
+import com.alexzdns.books.ui.core.models.BookItemUi
 import com.alexzdns.books.ui.core.theme.blue
 import com.alexzdns.books.ui.core.theme.lightGrey
 import com.alexzdns.books.ui.core.views.ErrorView
 import com.alexzdns.books.ui.core.views.LoaderView
 import com.alexzdns.books.ui.core.views.MessageView
 import com.alexzdns.books.ui.features.search.R
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.alexzdns.books.ui.features.search.list.paging.PagingErrorComponent
+import com.alexzdns.books.ui.features.search.list.paging.PagingLoadingComponent
 
 @Composable
 fun BookSearchScreen(
@@ -63,11 +74,26 @@ fun BookSearchScreen(
             BookSearchState.EmptyResult -> MessageView(R.string.empty_result_message)
             BookSearchState.Error -> ErrorView(viewModel::retrySearch)
             BookSearchState.Loading -> LoaderView()
-            is BookSearchState.Result -> BooksListView(
-                books = result.bookList,
-                onBookClick = onBookClick,
-                onFavorite = favoritesOperationViewModel::onFavoriteClick
-            )
+            is BookSearchState.Result -> {
+
+                val lazyPagingItems = result.bookList.collectAsLazyPagingItems()
+
+                when (lazyPagingItems.loadState.refresh) {
+                    is LoadState.Error -> ErrorView(lazyPagingItems::retry)
+                    LoadState.Loading -> LoaderView()
+                    is LoadState.NotLoading -> {
+                        if (lazyPagingItems.itemCount == 0) {
+                            MessageView(R.string.empty_result_message)
+                        } else {
+                            BooksListPagingView(
+                                lazyPagingItems = lazyPagingItems,
+                                onBookClick = onBookClick,
+                                onFavorite = favoritesOperationViewModel::onFavoriteClick
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -134,5 +160,47 @@ private fun Toolbar(
                 modifier = Modifier.padding(4.dp)
             )
         }
+    }
+}
+
+@Composable
+private fun BooksListPagingView(
+    lazyPagingItems: LazyPagingItems<BookItemUi>,
+    onBookClick: (String) -> Unit,
+    onFavorite: (String) -> Unit,
+) {
+    val spanCount = 2
+
+    LazyVerticalGrid(
+        GridCells.Fixed(spanCount),
+        contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 12.dp),
+        verticalArrangement = Arrangement.spacedBy(32.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+
+        items(lazyPagingItems.itemCount) { index ->
+            val book = lazyPagingItems[index]
+
+            book?.let {
+                BookItemView(
+                    item = it,
+                    onItemClick = onBookClick,
+                    onFavorite = onFavorite
+                )
+            }
+        }
+
+        item(span = { GridItemSpan(spanCount) }) {
+            HandleFooter(lazyPagingItems.loadState.append, lazyPagingItems::retry)
+        }
+    }
+}
+
+@Composable
+fun HandleFooter(state: LoadState, retry: () -> Unit) {
+    when (state) {
+        is LoadState.Error -> PagingErrorComponent(retry = retry)
+        LoadState.Loading -> PagingLoadingComponent()
+        is LoadState.NotLoading -> Unit
     }
 }

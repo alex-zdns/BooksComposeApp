@@ -2,4 +2,5 @@
 <resources>
     <string name="error_message">Ошибка выполнения запроса, попробуйте повторить</string>
     <string name="retry">Попробовать еще</string>
+    <string name="empty_authors">Нет данных</string>
 </resources>

@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.alexzdns.books.ui.core.R
@@ -58,7 +59,7 @@ fun BooksListView(
 }
 
 @Composable
-private fun BookItemView(
+fun BookItemView(
     item: BookItemUi,
     onItemClick: (String) -> Unit,
     onFavorite: (String) -> Unit,
@@ -100,7 +101,10 @@ private fun BookItemView(
         }
 
         Text(
-            text = book.authors.joinToString(),
+            text = if (book.authors.isEmpty())
+                stringResource(R.string.empty_authors)
+            else
+                book.authors.joinToString(),
             Modifier.padding(top = 8.dp),
             color = darkGrey,
             style = TypographyApp.bodySmall,

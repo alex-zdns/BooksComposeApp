@@ -2,11 +2,16 @@ package com.alexzdns.books.ui.features.search.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
+import androidx.paging.map
 import com.alexzdns.books.domain.models.BookSortType
 import com.alexzdns.books.domain.repository.BookCacheRepository
 import com.alexzdns.books.domain.repository.BookRepository
 import com.alexzdns.books.domain.repository.FavoritesBooksRepository
 import com.alexzdns.books.ui.core.models.BookItemUi
+import com.alexzdns.books.ui.features.search.list.paging.BookPagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
@@ -17,6 +22,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,7 +31,7 @@ import javax.inject.Inject
 class BookSearchViewModel @Inject constructor(
     private val bookRepository: BookRepository,
     private val cacheRepository: BookCacheRepository,
-    private val favoritesBooksRepository: FavoritesBooksRepository,
+    favoritesBooksRepository: FavoritesBooksRepository,
 ) : ViewModel() {
 
     companion object {
@@ -39,15 +45,17 @@ class BookSearchViewModel @Inject constructor(
         .combine(favoritesBooksRepository.getFavoritesBookIds()) { state, favoritesBookIds ->
             this@BookSearchViewModel.favoritesBookIds = favoritesBookIds
             if (state is BookSearchState.Result) {
-                val books = state.bookList.map {
-                    val isFavorite = favoritesBookIds.contains(it.book.id)
-                    if (it.isFavorite != isFavorite) {
-                        it.copy(isFavorite = isFavorite)
-                    } else {
-                        it
+                val pagingDataFlow = state.bookList.map { pagingData ->
+                    pagingData.map { bookUiItem ->
+                        val isFavorite = favoritesBookIds.contains(bookUiItem.book.id)
+                        if (bookUiItem.isFavorite != isFavorite) {
+                            bookUiItem.copy(isFavorite = isFavorite)
+                        } else {
+                            bookUiItem
+                        }
                     }
                 }
-                state.copy(books)
+                state.copy(pagingDataFlow)
             } else {
                 state
             }
@@ -97,25 +105,35 @@ class BookSearchViewModel @Inject constructor(
             _booksStateFlow.emit(BookSearchState.Loading)
 
             try {
-                val bookList = bookRepository.searchBooks(
-                    query = query,
-                    sortType = bookSortType,
+                _booksStateFlow.emit(
+                    loadSearchBooks(
+                        searchQuery = query,
+                    )
                 )
-                if (bookList.isNotEmpty()) {
-                    cacheRepository.insertAll(bookList)
-                    _booksStateFlow.emit(BookSearchState.Result(bookList.map {
-                        BookItemUi(
-                            isFavorite = favoritesBookIds.contains(it.id),
-                            book = it,
-                        )
-                    }))
-                } else {
-                    _booksStateFlow.emit(BookSearchState.EmptyResult)
-                }
             } catch (_: Exception) {
                 _booksStateFlow.emit(BookSearchState.Error)
             }
         }
+    }
+
+    private fun loadSearchBooks(searchQuery: String): BookSearchState.Result {
+        val booksFlow = Pager(PagingConfig(10)) {
+            BookPagingSource(
+                repository = bookRepository,
+                cacheRepository = cacheRepository,
+                searchQuery = searchQuery,
+                sortType = bookSortType,
+            )
+        }.flow.cachedIn(viewModelScope).map { list ->
+            list.map { book ->
+                BookItemUi(
+                    isFavorite = favoritesBookIds.contains(book.id),
+                    book = book,
+                )
+            }
+        }
+
+        return BookSearchState.Result(booksFlow)
     }
 
     fun retrySearch() {

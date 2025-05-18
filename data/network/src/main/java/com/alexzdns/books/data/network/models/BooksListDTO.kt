@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal class BooksListDTO(
     @SerialName("totalItems")
-    val totalItems: Int?,
+    val totalItems: Int? = 0,
     @SerialName("items")
-    val items: List<BookItemDTO>?
+    val items: List<BookItemDTO>? = null
 )
