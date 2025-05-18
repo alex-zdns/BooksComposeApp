@@ -5,5 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface BookCacheRepository {
     suspend fun insertAll(books: List<BookItem>)
+    suspend fun getCachedBook(bookId: String): BookItem?
     fun getAllFavoritesBooks(): Flow<List<BookItem>>
 }

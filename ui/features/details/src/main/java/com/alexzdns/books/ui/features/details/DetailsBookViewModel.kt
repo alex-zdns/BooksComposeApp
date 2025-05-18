@@ -3,6 +3,7 @@ package com.alexzdns.books.ui.features.details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.alexzdns.books.domain.repository.BookCacheRepository
 import com.alexzdns.books.domain.repository.BookRepository
 import com.alexzdns.books.domain.repository.FavoritesBooksRepository
 import com.alexzdns.books.domain.repository.HistorySeenBooksRepository
@@ -17,6 +18,7 @@ import javax.inject.Inject
 class BookDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val bookRepository: BookRepository,
+    private val cacheRepository: BookCacheRepository,
     private val favoritesBooksRepository: FavoritesBooksRepository,
     private val historySeenBooksRepository: HistorySeenBooksRepository
 ) : ViewModel() {
@@ -43,6 +45,10 @@ class BookDetailsViewModel @Inject constructor(
     private fun getBook() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                val cacheBook = cacheRepository.getCachedBook(bookId)
+                cacheBook?.let {
+                    _bookDetailsStateFlow.emit(BookDetailsState.Result(cacheBook))
+                }
                 val bookItem = bookRepository.getBook(bookId)
                 _bookDetailsStateFlow.emit(BookDetailsState.Result(bookItem))
             } catch (_: Exception) {

@@ -16,6 +16,10 @@ internal class BookCacheRepositoryImpl @Inject constructor(
         dao.insertAll(books.map(mapper::toEntity))
     }
 
+    override suspend fun getCachedBook(bookId: String): BookItem? {
+        return dao.loadById(bookId)?.let(mapper::fromEntity)
+    }
+
     override fun getAllFavoritesBooks(): Flow<List<BookItem>> {
         return dao.getFavoritesBook().map { list ->
             list.map(mapper::fromEntity)
